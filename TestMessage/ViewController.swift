@@ -13,12 +13,13 @@ struct ChatMessage {
     let isIncoming: Bool
 }
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SendElementDelegate {
-    
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SendElementDelegate, TextSender {
     let cellId = "id"
     private var tableView: UITableView!
 
     var chatMessages = [ChatMessage]()
+    
+    let YC = YandexClient()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +29,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let displayHeight: CGFloat = self.view.frame.height
         
         tableView = UITableView(frame: CGRect(x: 0, y: barHeight, width: displayWidth, height: displayHeight - 98))
-        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(ChatMessageCell.self, forCellReuseIdentifier: cellId)
@@ -37,11 +37,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: tableView.bounds.size.width - 8.0)
         
         let buttomView = ButtomView(frame: CGRect(x: 4, y: displayHeight - 60, width: displayWidth - 8, height: 44))
-
         buttomView.element = self
         
         view.addSubview(tableView)
         view.addSubview(buttomView)
+        
+        YC.textProtocol = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -64,8 +65,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func sendElement(_ str: String, _ lang: Bool) {
-        let translatedText = YandexClient().getMethod(textToTranslate: str, lang: lang)
-        chatMessages.append(ChatMessage(text: str, transText: translatedText, isIncoming: lang))
+        YC.getMethod(textToTranslate: str, lang: lang)
+    }
+    
+    func sendTranslatedText(text: String, translatedText: String, lang:Bool) {
+        print("---------------------------")
+        chatMessages.append(ChatMessage(text: text, transText: translatedText, isIncoming: lang))
         tableView.reloadData()
     }
     

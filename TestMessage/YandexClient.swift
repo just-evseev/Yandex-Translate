@@ -8,21 +8,26 @@
 
 import Foundation
 
+protocol TextSender {
+    func sendTranslatedText(text: String, translatedText: String, lang:Bool)
+}
+
 class YandexClient {
     let APIKey = "trnsl.1.1.20181129T035043Z.123cb5af06d92209.5791edfbdd45a731dbdd0d86265a361cf914f63a"
     let site = "https://translate.yandex.net/api/v1.5/tr.json/translate"
     var ui = "en"
-    
+    var textProtocol: TextSender?
+
 //    init() {
 //
 //    }
     
-    func getMethod(textToTranslate: String, lang: Bool) -> String {
+    func getMethod(textToTranslate: String, lang: Bool) {
         ui = lang ? "ru" : "en"
         var translatedText = "hello"
         let textToTranslateURL = textToTranslate.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         print(textToTranslateURL!)
-        guard let url = URL(string: "\(site)?key=\(APIKey)&text=\(textToTranslateURL!)&lang=\(ui)") else { return "error in url" }
+        guard let url = URL(string: "\(site)?key=\(APIKey)&text=\(textToTranslateURL!)&lang=\(ui)") else { return }
         
         let session = URLSession.shared
         session.dataTask(with: url) { (data, response, error) in
@@ -36,13 +41,14 @@ class YandexClient {
                     if let str = j["text"] as? [String] {
                         translatedText = str[0]
                         translatedText = translatedText.removingPercentEncoding!
+                        print("++++++++++++++++++++++++++++++++++++")
+                        self.textProtocol?.sendTranslatedText(text: textToTranslate, translatedText: translatedText, lang: lang)
                     }
                 }
             } catch {
                 print(error)
             }
             }.resume()
-        return translatedText
     }
     
 }
