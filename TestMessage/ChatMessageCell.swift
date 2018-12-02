@@ -24,7 +24,8 @@ class ChatMessageCell: UITableViewCell {
             
             personText.text = chatMessage.text
             personText.textColor = UIColor.grayYandex
-
+            
+            print(chatMessage)
             if chatMessage.isIncoming {
                 personLeadingConstraint.isActive = true
                 personTrailingConstraint.isActive = false
@@ -42,6 +43,9 @@ class ChatMessageCell: UITableViewCell {
                 translateText.textAlignment = .right
                 bubbleBackgroudView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMinYCorner]
             }
+            
+            translateText.sizeToFit()
+            personText.sizeToFit()
             
             if (translateText.frame.width < personText.frame.width) {
                 bubbleTransLeadingConstraint.isActive = false

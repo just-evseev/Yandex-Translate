@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA2A0FA421B28DFF0023C78B /* YandexClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2A0FA321B28DFF0023C78B /* YandexClient.swift */; };
 		FA4D279821B00F1C000288D4 /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4D279721B00F1C000288D4 /* BottomView.swift */; };
 		FA94294221AD27C300AC8F7F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA94294121AD27C300AC8F7F /* AppDelegate.swift */; };
 		FA94294721AD27C300AC8F7F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA94294521AD27C300AC8F7F /* Main.storyboard */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FA2A0FA321B28DFF0023C78B /* YandexClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexClient.swift; sourceTree = "<group>"; };
 		FA4D279721B00F1C000288D4 /* BottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView.swift; sourceTree = "<group>"; };
 		FA94293E21AD27C300AC8F7F /* TestMessage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestMessage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA94294121AD27C300AC8F7F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 				FA94295521AD27DD00AC8F7F /* ViewController.swift */,
 				FA4D279721B00F1C000288D4 /* BottomView.swift */,
 				FA94295321AD27D300AC8F7F /* ChatMessageCell.swift */,
+				FA2A0FA321B28DFF0023C78B /* YandexClient.swift */,
 				FA94294521AD27C300AC8F7F /* Main.storyboard */,
 				FA94294821AD27C400AC8F7F /* Assets.xcassets */,
 				FA94294A21AD27C400AC8F7F /* LaunchScreen.storyboard */,
@@ -145,6 +148,7 @@
 				FA94295421AD27D300AC8F7F /* ChatMessageCell.swift in Sources */,
 				FA94294221AD27C300AC8F7F /* AppDelegate.swift in Sources */,
 				FA4D279821B00F1C000288D4 /* BottomView.swift in Sources */,
+				FA2A0FA421B28DFF0023C78B /* YandexClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -64,7 +64,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func sendElement(_ str: String, _ lang: Bool) {
-        chatMessages.append(ChatMessage(text: str, transText: str, isIncoming: lang))
+        let translatedText = YandexClient().getMethod(textToTranslate: str, lang: lang)
+        chatMessages.append(ChatMessage(text: str, transText: translatedText, isIncoming: lang))
         tableView.reloadData()
     }
     
