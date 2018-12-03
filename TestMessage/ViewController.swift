@@ -29,7 +29,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let displayWidth: CGFloat = self.view.frame.width
         let displayHeight: CGFloat = self.view.frame.height
         
-        tableView = UITableView(frame: CGRect(x: 0, y: barHeight, width: displayWidth, height: displayHeight - 98))
+        let customView = UIView(frame: CGRect(x: 0, y: barHeight, width: displayWidth, height: 72 - barHeight))
+        let yandexLogo = UIImage(named: "yandexLogo")
+        let yandexlogoImageView = UIImageView(frame: CGRect(x: displayWidth / 2 - 71.41, y: (72 - barHeight) / 2 - 10.45, width: 142.82, height: 20.9))
+        yandexlogoImageView.image = yandexLogo
+        customView.addSubview(yandexlogoImageView)
+        
+        tableView = UITableView(frame: CGRect(x: 0, y: 72, width: displayWidth, height: displayHeight - 159))
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(ChatMessageCell.self, forCellReuseIdentifier: cellId)
@@ -42,6 +48,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         view.addSubview(tableView)
         view.addSubview(buttomView)
+        view.addSubview(customView)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -80,9 +87,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         } else {
             langBool = false
         }
-        chatMessages.append(ChatMessage(text: text, transText: translatedText, isIncoming: langBool))
+        chatMessages.insert(ChatMessage(text: text, transText: translatedText, isIncoming: langBool), at: 0)
         DispatchQueue.main.async {
-            self.tableView.reloadData()
+//            self.tableView.reloadData()
+            self.tableView.beginUpdates()
+            self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            self.tableView.endUpdates()
         }
     }
     
