@@ -16,6 +16,11 @@ protocol SendElementDelegate {
     func sendElement(_ str: String, _ lang: Bool)
 }
 
+protocol ActionButtonDelegate {
+    func voiceRecognizeStart()
+    func voiceRecognizeStop()
+}
+
 class ButtomView: UIView, UITextFieldDelegate {
     
     var changeLangButton = UIButton(type: .custom)
@@ -28,8 +33,11 @@ class ButtomView: UIView, UITextFieldDelegate {
     var actionButtonImage = UIImageView()
     
     var element: SendElementDelegate?
+    var actionButtonDelegate: ActionButtonDelegate?
     
-    var langIdent = true
+    var isActiveButtonOnMicro = true
+    var isMicroActive = false
+    var isENLang = true
     /*
      true = ENG
      false = RUS
@@ -38,8 +46,8 @@ class ButtomView: UIView, UITextFieldDelegate {
     var rusFlagLeadingConstraint: NSLayoutConstraint!
     var britFlagTrailingConstraint: NSLayoutConstraint!
     
-    override init (frame : CGRect) {
-        super.init(frame : frame)
+    override init (frame: CGRect) {
+        super.init(frame: frame)
                 
         backgroundColor = UIColor.blueYandex
         layer.cornerRadius = 22.0
@@ -129,15 +137,32 @@ class ButtomView: UIView, UITextFieldDelegate {
     }
     
     @objc func actionButtonPressed(sender: UIButton) {
-        endEditing(true)
-        let str = textField.text!
-        if (str != "" && str != "Русский" && str != "Английский") {
-            element?.sendElement(textField.text!, langIdent)
-            textField.text = langIdent ? "Английский" : "Русский"
-        } else if (str == "") {
-            textField.text = langIdent ? "Английский" : "Русский"
+        if isActiveButtonOnMicro {
+            if !isMicroActive {
+                actionButtonDelegate?.voiceRecognizeStart()
+                actionButtonImage.image = UIImage(named: "microphone")
+                isMicroActive = true
+            } else {
+                actionButtonDelegate?.voiceRecognizeStop()
+                actionButtonImage.image = UIImage(named: "microphone")
+                isMicroActive = false
+            }
+        } else {
+            endEditing(true)
+            let str = textField.text!
+            if (str != "" && str != "Русский" && str != "Английский") {
+                element?.sendElement(textField.text!, isENLang)
+                textField.text = isENLang ? "Английский" : "Русский"
+            } else if (str == "") {
+                textField.text = isENLang ? "Английский" : "Русский"
+            }
+            actionButtonImage.image = UIImage(named: "microphone")
+            isActiveButtonOnMicro = !isActiveButtonOnMicro
+            if isMicroActive {
+                actionButtonDelegate?.voiceRecognizeStop()
+                isMicroActive = false
+            }
         }
-        actionButtonImage.image = UIImage(named: "microphone")
     }
     
     @objc func changeLanguageButtonPressed(sender: UIButton) {
@@ -147,7 +172,7 @@ class ButtomView: UIView, UITextFieldDelegate {
     @objc func clearTextFieldButtonPressed(sender: UIButton) {
         if textField.isEditing {
             self.textField.text = ""
-        } else if langIdent {
+        } else if isENLang {
             self.textField.text = "Английский"
         } else {
             self.textField.text = "Русский"
@@ -158,6 +183,7 @@ class ButtomView: UIView, UITextFieldDelegate {
         self.textField.text = ""
         self.textField.textColor = UIColor.whiteYandex
         actionButtonImage.image = UIImage(named: "sendMsg")
+        isActiveButtonOnMicro = !isActiveButtonOnMicro
         return true
     }
     
@@ -166,7 +192,7 @@ class ButtomView: UIView, UITextFieldDelegate {
     }
     
     func changeLanguage() {
-        langIdent = !langIdent
+        isENLang = !isENLang
         if (rusFlagLeadingConstraint.constant != 2) {
             rusFlagLeadingConstraint.constant = 2
             britFlagTrailingConstraint.constant = -2
