@@ -14,10 +14,24 @@ protocol TextSender {
 }
 
 class YandexClient {
-    let APIKey = "trnsl.1.1.20181129T035043Z.123cb5af06d92209.5791edfbdd45a731dbdd0d86265a361cf914f63a"
+    
+    var APIKey = ""
     let translateSite = "https://translate.yandex.net/api/v1.5/tr.json/translate"
     let detectSite = "https://translate.yandex.net/api/v1.5/tr.json/detect"
     var textProtocol: TextSender?
+    
+    init() {
+        var nsDictionary: NSDictionary?
+        if let path = Bundle.main.path(forResource: "Keys", ofType: "plist") {
+            nsDictionary = NSDictionary(contentsOfFile: path)
+            if let api = nsDictionary?["yandexAPIKey"] as? String {
+                APIKey = api
+            } else {
+                print("Need API key for work")
+                return
+            }
+        }
+    }
     
     func getMethod(textToTranslate: String, lang: String) {
         var translatedText = "hello"

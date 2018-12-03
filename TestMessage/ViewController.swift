@@ -89,9 +89,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         chatMessages.insert(ChatMessage(text: text, transText: translatedText, isIncoming: langBool), at: 0)
         DispatchQueue.main.async {
-//            self.tableView.reloadData()
             self.tableView.beginUpdates()
-            self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableView.RowAnimation.fade)
+                // как я понимаю анимация добавления новой ячейки кастомная, не получилось подобрать из стандартных
             self.tableView.endUpdates()
         }
     }
