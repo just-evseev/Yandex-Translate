@@ -14,6 +14,7 @@ struct ChatMessage {
 }
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SendElementDelegate, TextSender {
+    
     let cellId = "id"
     private var tableView: UITableView!
 
@@ -42,10 +43,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         view.addSubview(tableView)
         view.addSubview(buttomView)
         
-        YC.textProtocol = self
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        YC.textProtocol = self
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -65,13 +66,24 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func sendElement(_ str: String, _ lang: Bool) {
-        YC.getMethod(textToTranslate: str, lang: lang)
+        YC.getLang(text: str, lang: lang)
     }
     
-    func sendTranslatedText(text: String, translatedText: String, lang:Bool) {
-        print("---------------------------")
-        chatMessages.append(ChatMessage(text: text, transText: translatedText, isIncoming: lang))
-        tableView.reloadData()
+    func sendTextLang(text: String, lang: String) {
+        YC.getMethod(textToTranslate: text, lang: lang)
+    }
+    
+    func sendTranslatedText(text: String, translatedText: String, lang: String) {
+        var langBool: Bool
+        if (lang == "en") {
+            langBool = true
+        } else {
+            langBool = false
+        }
+        chatMessages.append(ChatMessage(text: text, transText: translatedText, isIncoming: langBool))
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {

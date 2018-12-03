@@ -25,7 +25,6 @@ class ChatMessageCell: UITableViewCell {
             personText.text = chatMessage.text
             personText.textColor = UIColor.grayYandex
             
-            print(chatMessage)
             if chatMessage.isIncoming {
                 personLeadingConstraint.isActive = true
                 personTrailingConstraint.isActive = false
