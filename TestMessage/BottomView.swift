@@ -21,7 +21,7 @@ protocol SendElementDelegate {
 //    func voiceRecognizeStop()
 //}
 
-class ButtomView: UIView, UITextFieldDelegate {
+class ButtomView: UIView, UITextFieldDelegate, VoiceRecognizeText {
     
     var changeLangButton = UIButton(type: .custom)
     var textField = UITextField()
@@ -32,6 +32,7 @@ class ButtomView: UIView, UITextFieldDelegate {
     var flagsView = UIView()
     var actionButtonImage = UIImageView()
     
+    let VR = VoiseRecognizer()
     var element: SendElementDelegate?
 //    var actionButtonDelegate: ActionButtonDelegate?
     var voiceRec = VoiseRecognizer()
@@ -135,18 +136,20 @@ class ButtomView: UIView, UITextFieldDelegate {
         rusFlagLeadingConstraint.isActive = true
         britFlagTrailingConstraint = britFlagImage.trailingAnchor.constraint(equalTo: flagsView.trailingAnchor, constant: -2)
         britFlagTrailingConstraint.isActive = true
+        
+        VR.voiseRecognizeTextProtocol = self
     }
     
     @objc func actionButtonPressed(sender: UIButton) {
         if isActiveButtonOnMicro {
             if !isMicroActive {
-                voiceRec.voiceRecognizeStart()
-                actionButtonImage.image = UIImage(named: "microphone")
+                actionButtonImage.image = UIImage(named: "startVoice")
                 isMicroActive = true
+                voiceRec.voiceRecognizeStart()
             } else {
-                voiceRec.voiceRecognizeStop()
                 actionButtonImage.image = UIImage(named: "microphone")
                 isMicroActive = false
+                voiceRec.voiceRecognizeStop()
             }
         } else {
             endEditing(true)
@@ -158,7 +161,7 @@ class ButtomView: UIView, UITextFieldDelegate {
                 textField.text = isENLang ? "Английский" : "Русский"
             }
             actionButtonImage.image = UIImage(named: "microphone")
-            isActiveButtonOnMicro = !isActiveButtonOnMicro
+            isActiveButtonOnMicro = true
             if isMicroActive {
                 voiceRec.voiceRecognizeStop()
                 isMicroActive = false
@@ -184,7 +187,7 @@ class ButtomView: UIView, UITextFieldDelegate {
         self.textField.text = ""
         self.textField.textColor = UIColor.whiteYandex
         actionButtonImage.image = UIImage(named: "sendMsg")
-        isActiveButtonOnMicro = !isActiveButtonOnMicro
+        isActiveButtonOnMicro = false
         return true
     }
     
@@ -225,6 +228,11 @@ class ButtomView: UIView, UITextFieldDelegate {
                 self.backgroundColor = UIColor.redYandex
             }.startAnimation()
         }
+    }
+    
+    func getText(text: String) {
+        print("\n\(text)-------------------")
+        element?.sendElement(text, isENLang)
     }
     
     required init?(coder aDecoder: NSCoder) {

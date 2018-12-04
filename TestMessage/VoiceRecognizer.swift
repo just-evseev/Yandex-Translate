@@ -13,6 +13,10 @@ protocol AlertProtocol {
     func sendAlert(message: String)
 }
 
+protocol VoiceRecognizeText {
+    func getText(text: String)
+}
+
 class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
     
     let audioEngine = AVAudioEngine()
@@ -20,8 +24,10 @@ class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
     let request = SFSpeechAudioBufferRecognitionRequest()
     var recognitionTask: SFSpeechRecognitionTask?
     var isRecording = false
+    var bestString = ""
     
     var alertProtocol: AlertProtocol?
+    var voiseRecognizeTextProtocol: VoiceRecognizeText?
     
     func voiceRecognizeStart() {
         recordAndRecognizeSpeech()
@@ -30,6 +36,9 @@ class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
     func voiceRecognizeStop() {
         audioEngine.stop()
         recognitionTask?.cancel()
+        if bestString != "" {
+            voiseRecognizeTextProtocol?.getText(text: bestString)
+        }
     }
     
     func requestSpeechAuthorization() {
@@ -37,6 +46,7 @@ class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
             OperationQueue.main.addOperation {
                 switch authStatus {
                 case .authorized:
+                    print("++++++OK+++++++++++")
                     break
                 case .denied:
                     print("User denied access to speech recognition")
@@ -63,23 +73,23 @@ class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
         do {
             try audioEngine.start()
         } catch {
-            self.alertProtocol!.sendAlert(message: "There has been an audio engine error.")
+            self.alertProtocol?.sendAlert(message: "There has been an audio engine error.")
             return print(error)
         }
         guard let myRecognizer = SFSpeechRecognizer() else {
-            self.alertProtocol!.sendAlert(message: "Speech recognition is not supported for your current locale.")
+            self.alertProtocol?.sendAlert(message: "Speech recognition is not supported for your current locale.")
             return
         }
         if !myRecognizer.isAvailable {
-            self.alertProtocol!.sendAlert(message: "Speech recognition is not currently available. Check back at a later time.")
+            self.alertProtocol?.sendAlert(message: "Speech recognition is not currently available. Check back at a later time.")
             return
         }
         recognitionTask = speechRecognizer?.recognitionTask(with: request, resultHandler: { result, error in
             if let result = result {
-                let bestString = result.bestTranscription.formattedString
-                self.alertProtocol!.sendAlert(message: bestString)
+                print(result)
+                self.bestString = result.bestTranscription.formattedString
             } else if let error = error {
-                self.alertProtocol!.sendAlert(message: "There has been a speech recognition error.")
+                self.alertProtocol?.sendAlert(message: "There has been a speech recognition error.")
                 print(error)
             }
         })
