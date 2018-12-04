@@ -13,7 +13,7 @@ struct ChatMessage {
     let isIncoming: Bool
 }
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SendElementDelegate, TextSender {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SendElementDelegate, TextSender, AlertProtocol {
     
     let cellId = "id"
     private var tableView: UITableView!
@@ -94,6 +94,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 // как я понимаю анимация добавления новой ячейки кастомная, не получилось подобрать из стандартных
             self.tableView.endUpdates()
         }
+    }
+    
+    func sendAlert(message: String) {
+        let alert = UIAlertController(title: "Speech Recognizer Error", message: message, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {

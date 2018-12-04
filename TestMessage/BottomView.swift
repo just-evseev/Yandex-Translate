@@ -16,10 +16,10 @@ protocol SendElementDelegate {
     func sendElement(_ str: String, _ lang: Bool)
 }
 
-protocol ActionButtonDelegate {
-    func voiceRecognizeStart()
-    func voiceRecognizeStop()
-}
+//protocol ActionButtonDelegate {
+//    func voiceRecognizeStart()
+//    func voiceRecognizeStop()
+//}
 
 class ButtomView: UIView, UITextFieldDelegate {
     
@@ -33,7 +33,8 @@ class ButtomView: UIView, UITextFieldDelegate {
     var actionButtonImage = UIImageView()
     
     var element: SendElementDelegate?
-    var actionButtonDelegate: ActionButtonDelegate?
+//    var actionButtonDelegate: ActionButtonDelegate?
+    var voiceRec = VoiseRecognizer()
     
     var isActiveButtonOnMicro = true
     var isMicroActive = false
@@ -139,11 +140,11 @@ class ButtomView: UIView, UITextFieldDelegate {
     @objc func actionButtonPressed(sender: UIButton) {
         if isActiveButtonOnMicro {
             if !isMicroActive {
-                actionButtonDelegate?.voiceRecognizeStart()
+                voiceRec.voiceRecognizeStart()
                 actionButtonImage.image = UIImage(named: "microphone")
                 isMicroActive = true
             } else {
-                actionButtonDelegate?.voiceRecognizeStop()
+                voiceRec.voiceRecognizeStop()
                 actionButtonImage.image = UIImage(named: "microphone")
                 isMicroActive = false
             }
@@ -159,7 +160,7 @@ class ButtomView: UIView, UITextFieldDelegate {
             actionButtonImage.image = UIImage(named: "microphone")
             isActiveButtonOnMicro = !isActiveButtonOnMicro
             if isMicroActive {
-                actionButtonDelegate?.voiceRecognizeStop()
+                voiceRec.voiceRecognizeStop()
                 isMicroActive = false
             }
         }

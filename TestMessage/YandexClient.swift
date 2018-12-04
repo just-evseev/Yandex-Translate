@@ -6,7 +6,7 @@
 //  Copyright © 2018 Ilya. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol TextSender {
     func sendTranslatedText(text: String, translatedText: String, lang: String)
