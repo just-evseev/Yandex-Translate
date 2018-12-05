@@ -21,7 +21,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var chatMessages = [ChatMessage]()
     
     let YC = YandexClient()
-//    let VR = VoiseRecognizer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +54,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         YC.textProtocol = self
-//        VR.voiseRecognizeTextProtocol = self
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

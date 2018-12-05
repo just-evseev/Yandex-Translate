@@ -19,26 +19,37 @@ protocol VoiceRecognizeText {
 
 class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
     
-    let audioEngine = AVAudioEngine()
-    let speechRecognizer: SFSpeechRecognizer? = SFSpeechRecognizer()
-    let request = SFSpeechAudioBufferRecognitionRequest()
-    var recognitionTask: SFSpeechRecognitionTask?
-    var isRecording = false
-    var bestString = ""
+    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
+    private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
+    private var recognitionTask: SFSpeechRecognitionTask?
+    private let audioEngine = AVAudioEngine()
+    private var recognText: String?
     
     var alertProtocol: AlertProtocol?
     var voiseRecognizeTextProtocol: VoiceRecognizeText?
     
+    override init() {
+        super.init()
+        
+        speechRecognizer.delegate = self
+        requestSpeechAuthorization()
+    }
+    
     func voiceRecognizeStart() {
-        recordAndRecognizeSpeech()
+        do {
+            try startRecording()
+        } catch {
+            print("error in recording")
+        }
     }
     
     func voiceRecognizeStop() {
         audioEngine.stop()
-        recognitionTask?.cancel()
-        if bestString != "" {
-            voiseRecognizeTextProtocol?.getText(text: bestString)
+        recognitionRequest?.endAudio()
+        guard let str = recognText else {
+            return
         }
+        voiseRecognizeTextProtocol?.getText(text: str)
     }
     
     func requestSpeechAuthorization() {
@@ -46,7 +57,6 @@ class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
             OperationQueue.main.addOperation {
                 switch authStatus {
                 case .authorized:
-                    print("++++++OK+++++++++++")
                     break
                 case .denied:
                     print("User denied access to speech recognition")
@@ -62,36 +72,50 @@ class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
         }
     }
     
-    func recordAndRecognizeSpeech() {
-        requestSpeechAuthorization()
-        let node = audioEngine.inputNode
-        let recordingFormat = node.outputFormat(forBus: 0)
-        node.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, _ in
-            self.request.append(buffer)
+    private func startRecording() throws {
+        
+        if let recognitionTask = recognitionTask {
+            recognitionTask.cancel()
+            self.recognitionTask = nil
         }
-        audioEngine.prepare()
-        do {
-            try audioEngine.start()
-        } catch {
-            self.alertProtocol?.sendAlert(message: "There has been an audio engine error.")
-            return print(error)
-        }
-        guard let myRecognizer = SFSpeechRecognizer() else {
-            self.alertProtocol?.sendAlert(message: "Speech recognition is not supported for your current locale.")
-            return
-        }
-        if !myRecognizer.isAvailable {
-            self.alertProtocol?.sendAlert(message: "Speech recognition is not currently available. Check back at a later time.")
-            return
-        }
-        recognitionTask = speechRecognizer?.recognitionTask(with: request, resultHandler: { result, error in
+        
+        let audioSession = AVAudioSession.sharedInstance()
+        try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
+        try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+        let inputNode = audioEngine.inputNode
+        
+        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
+        guard let recognitionRequest = recognitionRequest else { fatalError("Unable to created a SFSpeechAudioBufferRecognitionRequest object") }
+        recognitionRequest.shouldReportPartialResults = true
+        
+        recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest) { result, error in
+            var isFinal = false
+            
             if let result = result {
-                print(result)
-                self.bestString = result.bestTranscription.formattedString
-            } else if let error = error {
-                self.alertProtocol?.sendAlert(message: "There has been a speech recognition error.")
-                print(error)
+                let str = result.bestTranscription.formattedString
+                self.recognText = str
+                isFinal = result.isFinal
             }
-        })
+            
+            if error != nil || isFinal {
+                self.audioEngine.stop()
+                inputNode.removeTap(onBus: 0)
+                
+                self.recognitionRequest = nil
+                self.recognitionTask = nil
+                
+                if !isFinal {
+                    print("Got error in recogn")
+                }
+            }
+        }
+        
+        let recordingFormat = inputNode.outputFormat(forBus: 0)
+        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
+            self.recognitionRequest?.append(buffer)
+        }
+        
+        audioEngine.prepare()
+        try audioEngine.start()
     }
 }
