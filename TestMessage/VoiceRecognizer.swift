@@ -19,11 +19,10 @@ protocol VoiceRecognizeText {
 
 class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
     
-    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
+    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))! //ru_RU
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     private let audioEngine = AVAudioEngine()
-    private var recognText: String?
     
     var alertProtocol: AlertProtocol?
     var voiseRecognizeTextProtocol: VoiceRecognizeText?
@@ -46,10 +45,6 @@ class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
     func voiceRecognizeStop() {
         audioEngine.stop()
         recognitionRequest?.endAudio()
-        guard let str = recognText else {
-            return
-        }
-        voiseRecognizeTextProtocol?.getText(text: str)
     }
     
     func requestSpeechAuthorization() {
@@ -86,14 +81,20 @@ class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
         
         recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
         guard let recognitionRequest = recognitionRequest else { fatalError("Unable to created a SFSpeechAudioBufferRecognitionRequest object") }
-        recognitionRequest.shouldReportPartialResults = true
+        recognitionRequest.shouldReportPartialResults = false
+        
+        let recordingFormat = inputNode.outputFormat(forBus: 0)
+        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
+            self.recognitionRequest?.append(buffer)
+        }
         
         recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest) { result, error in
             var isFinal = false
-            
             if let result = result {
                 let str = result.bestTranscription.formattedString
-                self.recognText = str
+                if (str != "") {
+                    self.voiseRecognizeTextProtocol?.getText(text: str)
+                }
                 isFinal = result.isFinal
             }
             
@@ -108,11 +109,6 @@ class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
                     print("Got error in recogn")
                 }
             }
-        }
-        
-        let recordingFormat = inputNode.outputFormat(forBus: 0)
-        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
-            self.recognitionRequest?.append(buffer)
         }
         
         audioEngine.prepare()
