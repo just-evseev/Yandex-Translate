@@ -143,7 +143,7 @@ class ButtomView: UIView, UITextFieldDelegate, VoiceRecognizeText {
             if !isMicroActive {
                 actionButtonImage.image = UIImage(named: "startVoice")
                 isMicroActive = true
-                voiceRecogniser.voiceRecognizeStart()
+                voiceRecogniser.voiceRecognizeStart(lang: isENLang)
             } else {
                 actionButtonImage.image = UIImage(named: "microphone")
                 isMicroActive = false

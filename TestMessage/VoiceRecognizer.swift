@@ -19,7 +19,7 @@ protocol VoiceRecognizeText {
 
 class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
     
-    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))! //ru_RU
+    private var speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))! //ru_RU
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     private let audioEngine = AVAudioEngine()
@@ -34,7 +34,9 @@ class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
         requestSpeechAuthorization()
     }
     
-    func voiceRecognizeStart() {
+    func voiceRecognizeStart(lang: Bool) {
+        let lang = {lang ? "en-US" : "ru_RU"}
+        speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: lang()))!
         do {
             try startRecording()
         } catch {

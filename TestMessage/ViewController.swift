@@ -17,25 +17,30 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     let cellId = "id"
     private var tableView: UITableView!
+    private var customView: UIView!
 
     var chatMessages = [ChatMessage]()
+    
+    let barHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
+    var displayWidth = CGFloat()
+    var displayHeight = CGFloat()
     
     let YC = YandexClient()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let barHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
-        let displayWidth: CGFloat = self.view.frame.width
-        let displayHeight: CGFloat = self.view.frame.height
         
-        let customView = UIView(frame: CGRect(x: 0, y: barHeight, width: displayWidth, height: 72 - barHeight))
+        displayWidth = view.frame.width
+        displayHeight = view.frame.height
+        
+        customView = UIView(frame: CGRect(x: 0, y: barHeight, width: displayWidth, height: 72 - barHeight))
         let yandexLogo = UIImage(named: "yandexLogo")
         let yandexlogoImageView = UIImageView(frame: CGRect(x: displayWidth / 2 - 71.41, y: (72 - barHeight) / 2 - 10.45, width: 142.82, height: 20.9))
         yandexlogoImageView.image = yandexLogo
         customView.addSubview(yandexlogoImageView)
         
         tableView = UITableView(frame: CGRect(x: 0, y: 72, width: displayWidth, height: displayHeight - 159))
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(ChatMessageCell.self, forCellReuseIdentifier: cellId)
@@ -104,6 +109,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+                customView.frame = CGRect(x: 0, y: barHeight + keyboardSize.height, width: displayWidth, height: 72 - barHeight)
+                tableView.frame = CGRect(x: 0, y: 72 + keyboardSize.height, width: displayWidth, height: (displayHeight - keyboardSize.height - 65 - 72))
+            }
             if self.view.frame.origin.y == 0{
                 self.view.frame.origin.y -= keyboardSize.height
             }
@@ -112,6 +121,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @objc func keyboardWillHide(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if ((notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue) != nil {
+                customView.frame = CGRect(x: 0, y: barHeight, width: displayWidth, height: 72 - barHeight)
+                tableView.frame = CGRect(x: 0, y: 72, width: displayWidth, height: (displayHeight - 159))
+            }
             if self.view.frame.origin.y != 0{
                 self.view.frame.origin.y += keyboardSize.height
             }
