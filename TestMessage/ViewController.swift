@@ -15,27 +15,32 @@ struct ChatMessage {
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SendElementDelegate, TextSender, AlertProtocol {
     
-    let cellId = "id"
+    private let cellId = "id"
     private var tableView: UITableView!
     private var customView: UIView!
+    private var yandexlogoImageView: UIImageView!
+    private var bottomView: ButtomView!
 
     var chatMessages = [ChatMessage]()
     
-    let barHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
-    var displayWidth = CGFloat()
-    var displayHeight = CGFloat()
+    private var barHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
+    private var displayWidth = CGFloat()
+    private var displayHeight = CGFloat()
     
     let YC = YandexClient()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(barHeight)
+        YC.textProtocol = self
+        
         displayWidth = view.frame.width
         displayHeight = view.frame.height
         
         customView = UIView(frame: CGRect(x: 0, y: barHeight, width: displayWidth, height: 72 - barHeight))
         let yandexLogo = UIImage(named: "yandexLogo")
-        let yandexlogoImageView = UIImageView(frame: CGRect(x: displayWidth / 2 - 71.41, y: (72 - barHeight) / 2 - 10.45, width: 142.82, height: 20.9))
+        yandexlogoImageView = UIImageView(frame: CGRect(x: displayWidth / 2 - 71.41, y: (72 - barHeight) / 2 - 10.45, width: 142.82, height: 20.9))
         yandexlogoImageView.image = yandexLogo
         customView.addSubview(yandexlogoImageView)
         
@@ -48,17 +53,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.transform = CGAffineTransform(rotationAngle: -(CGFloat.pi));
         tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: tableView.bounds.size.width - 8.0)
         
-        let buttomView = ButtomView(frame: CGRect(x: 4, y: displayHeight - 60, width: displayWidth - 8, height: 44))
-        buttomView.element = self
+        bottomView = ButtomView(frame: CGRect(x: 4, y: displayHeight - 60, width: displayWidth - 8, height: 44))
+        bottomView.element = self
         
         view.addSubview(tableView)
-        view.addSubview(buttomView)
+        view.addSubview(bottomView)
         view.addSubview(customView)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        YC.textProtocol = self
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -109,10 +112,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-                customView.frame = CGRect(x: 0, y: barHeight + keyboardSize.height, width: displayWidth, height: 72 - barHeight)
-                tableView.frame = CGRect(x: 0, y: 72 + keyboardSize.height, width: displayWidth, height: (displayHeight - keyboardSize.height - 65 - 72))
-            }
+            customView.frame.origin.y += keyboardSize.height
+            tableView.frame.origin.y += keyboardSize.height
+            tableView.frame.size.height -= keyboardSize.height - 22
             if self.view.frame.origin.y == 0{
                 self.view.frame.origin.y -= keyboardSize.height
             }
@@ -121,13 +123,39 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @objc func keyboardWillHide(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if ((notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue) != nil {
-                customView.frame = CGRect(x: 0, y: barHeight, width: displayWidth, height: 72 - barHeight)
-                tableView.frame = CGRect(x: 0, y: 72, width: displayWidth, height: (displayHeight - 159))
-            }
+            customView.frame.origin.y -= keyboardSize.height
+            tableView.frame.origin.y -= keyboardSize.height
+            tableView.frame.size.height += keyboardSize.height - 22
             if self.view.frame.origin.y != 0{
                 self.view.frame.origin.y += keyboardSize.height
             }
+        }
+    }
+
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+        switch UIDevice.current.orientation{
+        case .portrait:
+            customView.frame = CGRect(x: 0, y: barHeight, width: displayWidth, height: 72 - barHeight)
+            yandexlogoImageView.frame = CGRect(x: displayWidth / 2 - 71.41, y: (72 - barHeight) / 2 - 10.45, width: 142.82, height: 20.9)
+            tableView.frame = CGRect(x: 0, y: 72, width: displayWidth, height: (displayHeight - 159))
+            bottomView.frame = CGRect(x: 4, y: displayHeight - 60, width: displayWidth - 8, height: 44)
+        case .portraitUpsideDown:
+            customView.frame = CGRect(x: 0, y: barHeight, width: displayWidth, height: 72 - barHeight)
+            yandexlogoImageView.frame = CGRect(x: displayWidth / 2 - 71.41, y: (72 - barHeight) / 2 - 10.45, width: 142.82, height: 20.9)
+            tableView.frame = CGRect(x: 0, y: 72, width: displayWidth, height: (displayHeight - 159))
+            bottomView.frame = CGRect(x: 4, y: displayHeight - 60, width: displayWidth - 8, height: 44)
+        case .landscapeLeft:
+            customView.frame = CGRect(x: 0, y: barHeight, width: displayHeight, height: 72 - barHeight)
+            yandexlogoImageView.frame = CGRect(x: displayHeight / 2 - 71.41, y: (72 - barHeight) / 2 - 10.45, width: 142.82, height: 20.9)
+            tableView.frame = CGRect(x: 0, y: 72, width: displayHeight, height: (displayWidth - 159))
+            bottomView.frame = CGRect(x: 4, y: displayWidth - 60, width: displayHeight - 8, height: 44)
+        case .landscapeRight:
+            customView.frame = CGRect(x: 0, y: barHeight, width: displayHeight, height: 72 - barHeight)
+            yandexlogoImageView.frame = CGRect(x: displayHeight / 2 - 71.41, y: (72 - barHeight) / 2 - 10.45, width: 142.82, height: 20.9)
+            tableView.frame = CGRect(x: 0, y: 72, width: displayHeight, height: (displayWidth - 159))
+            bottomView.frame = CGRect(x: 4, y: displayWidth - 60, width: displayHeight - 8, height: 44)
+        default:
+            print("Another")
         }
     }
 

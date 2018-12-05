@@ -1,43 +1,26 @@
 import UIKit
 
-extension UIView {
-    func hideKeyboardWhenTappedAround() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIView.dismissKeyboard))
-        addGestureRecognizer(tap)
-        
-    }
-    
-    @objc func dismissKeyboard() {
-        endEditing(true)
-    }
-}
-
 protocol SendElementDelegate {
     func sendElement(_ str: String, _ lang: Bool)
 }
 
-//protocol ActionButtonDelegate {
-//    func voiceRecognizeStart()
-//    func voiceRecognizeStop()
-//}
-
 class ButtomView: UIView, UITextFieldDelegate, VoiceRecognizeText {
     
-    var changeLangButton = UIButton(type: .custom)
-    var textField = UITextField()
-    var clearTextFieldButton = UIButton(type: .custom)
-    var actionButton = UIButton(type: .custom)
-    var rusFlagImage = UIImageView(image: UIImage(named: "rusFlag"))
-    var britFlagImage = UIImageView(image: UIImage(named: "britFlag"))
-    var flagsView = UIView()
-    var actionButtonImage = UIImageView()
+    private var changeLangButton = UIButton(type: .custom)
+    private var textField = UITextField()
+    private var clearTextFieldButton = UIButton(type: .custom)
+    private var actionButton = UIButton(type: .custom)
+    private var rusFlagImage = UIImageView(image: UIImage(named: "rusFlag"))
+    private var britFlagImage = UIImageView(image: UIImage(named: "britFlag"))
+    private var flagsView = UIView()
+    private var actionButtonImage = UIImageView()
     
     let voiceRecogniser = VoiseRecognizer()
     var element: SendElementDelegate?
 
-    var isActiveButtonOnMicro = true
-    var isMicroActive = false
-    var isENLang = true
+    private var isActiveButtonOnMicro = true
+    private var isMicroActive = false
+    private var isENLang = true
     /*
      true = ENG
      false = RUS
@@ -66,9 +49,11 @@ class ButtomView: UIView, UITextFieldDelegate, VoiceRecognizeText {
         textField.delegate = self
         textField.returnKeyType = .done
         textField.textAlignment = .natural
+        textField.tintColor = UIColor.whiteYandex
         
         actionButton.addTarget(self, action: #selector(self.actionButtonPressed), for: .touchUpInside)
         actionButtonImage.image = UIImage(named: "microphone")
+        actionButtonImage.contentMode = .scaleAspectFit
         
         clearTextFieldButton.setImage(UIImage(named: "clearText"), for: .normal)
         clearTextFieldButton.addTarget(self, action: #selector(self.clearTextFieldButtonPressed), for: .touchUpInside)
@@ -106,14 +91,14 @@ class ButtomView: UIView, UITextFieldDelegate, VoiceRecognizeText {
             britFlagImage.widthAnchor.constraint(equalToConstant: 32),
             
             textField.leadingAnchor.constraint(equalTo: flagsView.trailingAnchor, constant: 6),
-            textField.topAnchor.constraint(equalTo: topAnchor, constant: 12),
-            textField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+            textField.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+            textField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
             textField.widthAnchor.constraint(equalToConstant: 200),
             
             actionButtonImage.topAnchor.constraint(equalTo: topAnchor, constant: 14),
             actionButtonImage.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -14),
             actionButtonImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -14),
-            actionButtonImage.widthAnchor.constraint(equalToConstant: 12),
+            actionButtonImage.widthAnchor.constraint(equalToConstant: 18),
             
             actionButton.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             actionButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
@@ -122,7 +107,7 @@ class ButtomView: UIView, UITextFieldDelegate, VoiceRecognizeText {
             
             clearTextFieldButton.topAnchor.constraint(equalTo: topAnchor, constant: 14),
             clearTextFieldButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -14),
-            clearTextFieldButton.trailingAnchor.constraint(equalTo: actionButtonImage.leadingAnchor, constant: -16),
+            clearTextFieldButton.trailingAnchor.constraint(equalTo: actionButtonImage.leadingAnchor, constant: -10),
             clearTextFieldButton.widthAnchor.constraint(equalToConstant: 16),
             
             changeLangButton.topAnchor.constraint(equalTo: topAnchor, constant: 4),

@@ -49,26 +49,6 @@ class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
         recognitionRequest?.endAudio()
     }
     
-    func requestSpeechAuthorization() {
-        SFSpeechRecognizer.requestAuthorization { authStatus in
-            OperationQueue.main.addOperation {
-                switch authStatus {
-                case .authorized:
-                    break
-                case .denied:
-                    print("User denied access to speech recognition")
-                    break
-                case .restricted:
-                    print("Speech recognition restricted on this device")
-                    break
-                case .notDetermined:
-                    print("Speech recognition not yet authorized")
-                    break
-                }
-            }
-        }
-    }
-    
     private func startRecording() throws {
         
         if let recognitionTask = recognitionTask {
@@ -115,5 +95,25 @@ class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
         
         audioEngine.prepare()
         try audioEngine.start()
+    }
+    
+    private func requestSpeechAuthorization() {
+        SFSpeechRecognizer.requestAuthorization { authStatus in
+            OperationQueue.main.addOperation {
+                switch authStatus {
+                case .authorized:
+                    break
+                case .denied:
+                    print("User denied access to speech recognition")
+                    break
+                case .restricted:
+                    print("Speech recognition restricted on this device")
+                    break
+                case .notDetermined:
+                    print("Speech recognition not yet authorized")
+                    break
+                }
+            }
+        }
     }
 }

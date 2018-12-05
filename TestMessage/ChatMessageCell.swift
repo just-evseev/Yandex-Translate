@@ -2,18 +2,18 @@ import UIKit
 
 class ChatMessageCell: UITableViewCell {
 
-    let translateText = UILabel()
-    let personText = UILabel()
-    let bubbleBackgroudView = UIView()
+    private let translateText = UILabel()
+    private let personText = UILabel()
+    private let bubbleBackgroudView = UIView()
     
-    var personLeadingConstraint: NSLayoutConstraint!
-    var personTrailingConstraint: NSLayoutConstraint!
-    var translateLeadingConstraint: NSLayoutConstraint!
-    var translateTrailingConstraint: NSLayoutConstraint!
-    var bubbleTransLeadingConstraint: NSLayoutConstraint!
-    var bubbleTransTrailingConstraint: NSLayoutConstraint!
-    var bubblePersonLeadingConstraint: NSLayoutConstraint!
-    var bubblePersonTrailingConstraint: NSLayoutConstraint!
+    private var personLeadingConstraint: NSLayoutConstraint!
+    private var personTrailingConstraint: NSLayoutConstraint!
+    private var translateLeadingConstraint: NSLayoutConstraint!
+    private var translateTrailingConstraint: NSLayoutConstraint!
+    private var bubbleTransLeadingConstraint: NSLayoutConstraint!
+    private var bubbleTransTrailingConstraint: NSLayoutConstraint!
+    private var bubblePersonLeadingConstraint: NSLayoutConstraint!
+    private var bubblePersonTrailingConstraint: NSLayoutConstraint!
     
     var chatMessage: ChatMessage! {
         didSet {

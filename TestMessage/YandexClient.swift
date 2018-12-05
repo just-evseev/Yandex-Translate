@@ -15,9 +15,9 @@ protocol TextSender {
 
 class YandexClient {
     
-    var APIKey = ""
-    let translateSite = "https://translate.yandex.net/api/v1.5/tr.json/translate"
-    let detectSite = "https://translate.yandex.net/api/v1.5/tr.json/detect"
+    private var APIKey = ""
+    private let translateSite = "https://translate.yandex.net/api/v1.5/tr.json/translate"
+    private let detectSite = "https://translate.yandex.net/api/v1.5/tr.json/detect"
     var textProtocol: TextSender?
     
     init() {
@@ -34,14 +34,11 @@ class YandexClient {
     }
     
     func getMethod(textToTranslate: String, lang: String) {
+        
         var translatedText = "hello"
         let textToTranslateURL = textToTranslate.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        let translateLang: String
-        if (lang == "en") {
-            translateLang = lang + "-ru"
-        } else {
-            translateLang = lang + "-en"
-        }
+        let translateLang = lang == "en" ? lang + "-ru" : lang + "-en"
+        
         guard let url = URL(string: "\(translateSite)?key=\(APIKey)&text=\(textToTranslateURL!)&lang=\(translateLang)") else { return }
         
         let session = URLSession.shared
