@@ -65,7 +65,7 @@ class ChatMessageCell: UITableViewCell {
         
         backgroundColor = .clear
         
-        bubbleBackgroudView.layer.cornerRadius = 16
+        bubbleBackgroudView.layer.cornerRadius = 16.0
         
         personText.font = UIFont.systemFont(ofSize: 15.0, weight: UIFont.Weight.medium)
         translateText.font = UIFont.systemFont(ofSize: 20.0, weight: UIFont.Weight.medium)
@@ -96,7 +96,6 @@ class ChatMessageCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
         
-        
         personLeadingConstraint = translateText.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24)
         translateLeadingConstraint = personText.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24)
         
@@ -108,7 +107,6 @@ class ChatMessageCell: UITableViewCell {
         bubblePersonLeadingConstraint = bubbleBackgroudView.leadingAnchor.constraint(equalTo: personText.leadingAnchor, constant: -12)
         bubblePersonTrailingConstraint = bubbleBackgroudView.trailingAnchor.constraint(equalTo: personText.trailingAnchor, constant: 12)
     }
-    
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

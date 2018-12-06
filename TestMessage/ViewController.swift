@@ -13,10 +13,6 @@ struct ChatMessage {
     let isIncoming: Bool
 }
 
-protocol ProtocolToBottomView {
-    func displayToches()
-}
-
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SendElementDelegate, TextSender, AlertProtocol {
     
     private let cellId = "id"
@@ -26,7 +22,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     private var bottomView: ButtomView!
 
     var chatMessages = [ChatMessage]()
-    var protocolToBottomView: ProtocolToBottomView?
     
     private var barHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
     private var displayWidth = CGFloat()
@@ -38,7 +33,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(barHeight)
         YC.textProtocol = self
         
         displayWidth = view.frame.width
@@ -122,7 +116,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardHeight = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.height {
-            print(keyboardHeight)
             bottomView.frame.origin.y -= keyboardHeight
             tableView.frame.size.height -= keyboardHeight - 22
         }
@@ -165,7 +158,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             tableView.frame = CGRect(x: 0, y: 72, width: displayHeight, height: (displayWidth - 159))
             bottomView.frame = CGRect(x: 4, y: displayWidth - 60, width: displayHeight - 8, height: 44)
         default:
-            print("Another")
+            print("Error in orientation")
         }
     }
 

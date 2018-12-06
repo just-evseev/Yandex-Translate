@@ -90,11 +90,6 @@ class ButtomView: UIView, UITextFieldDelegate, VoiceRecognizeText {
             britFlagImage.bottomAnchor.constraint(equalTo: flagsView.bottomAnchor, constant: -2),
             britFlagImage.widthAnchor.constraint(equalToConstant: 32),
             
-            textField.leadingAnchor.constraint(equalTo: flagsView.trailingAnchor, constant: 6),
-            textField.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            textField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
-            textField.widthAnchor.constraint(equalToConstant: 200),
-            
             actionButtonImage.topAnchor.constraint(equalTo: topAnchor, constant: 14),
             actionButtonImage.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -14),
             actionButtonImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -14),
@@ -109,6 +104,11 @@ class ButtomView: UIView, UITextFieldDelegate, VoiceRecognizeText {
             clearTextFieldButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -14),
             clearTextFieldButton.trailingAnchor.constraint(equalTo: actionButtonImage.leadingAnchor, constant: -10),
             clearTextFieldButton.widthAnchor.constraint(equalToConstant: 16),
+            
+            textField.leadingAnchor.constraint(equalTo: flagsView.trailingAnchor, constant: 6),
+            textField.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+            textField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
+            textField.trailingAnchor.constraint(equalTo: clearTextFieldButton.leadingAnchor, constant: 5),
             
             changeLangButton.topAnchor.constraint(equalTo: topAnchor, constant: 4),
             changeLangButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
