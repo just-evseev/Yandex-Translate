@@ -25,37 +25,37 @@ class ChatMessageCell: UITableViewCell {
             personText.text = chatMessage.text
             personText.textColor = UIColor.grayYandex
             
+            translateText.sizeToFit()
+            personText.sizeToFit()
+            
             if chatMessage.isIncoming {
-                personLeadingConstraint.isActive = true
-                personTrailingConstraint.isActive = false
-                translateLeadingConstraint.isActive = true
                 translateTrailingConstraint.isActive = false
+                personTrailingConstraint.isActive = false
+                personLeadingConstraint.isActive = true
+                translateLeadingConstraint.isActive = true
                 personText.textAlignment = .left
                 translateText.textAlignment = .left
                 bubbleBackgroudView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMinYCorner]
             } else {
-                personTrailingConstraint.isActive = true
                 personLeadingConstraint.isActive = false
-                translateTrailingConstraint.isActive = true
                 translateLeadingConstraint.isActive = false
+                personTrailingConstraint.isActive = true
+                translateTrailingConstraint.isActive = true
                 personText.textAlignment = .right
                 translateText.textAlignment = .right
                 bubbleBackgroudView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMinYCorner]
             }
-            
-            translateText.sizeToFit()
-            personText.sizeToFit()
-            
+
             if (translateText.frame.width < personText.frame.width) {
                 bubbleTransLeadingConstraint.isActive = false
                 bubbleTransTrailingConstraint.isActive = false
                 bubblePersonTrailingConstraint.isActive = true
                 bubblePersonLeadingConstraint.isActive = true
             } else {
-                bubbleTransLeadingConstraint.isActive = true
-                bubbleTransTrailingConstraint.isActive = true
                 bubblePersonTrailingConstraint.isActive = false
                 bubblePersonLeadingConstraint.isActive = false
+                bubbleTransLeadingConstraint.isActive = true
+                bubbleTransTrailingConstraint.isActive = true
             }
         }
     }

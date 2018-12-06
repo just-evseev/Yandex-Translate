@@ -12,7 +12,6 @@
 		FA2A0FA821B536320023C78B /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA2A0FA721B536320023C78B /* Keys.plist */; };
 		FA4D279821B00F1C000288D4 /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4D279721B00F1C000288D4 /* BottomView.swift */; };
 		FA94294221AD27C300AC8F7F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA94294121AD27C300AC8F7F /* AppDelegate.swift */; };
-		FA94294721AD27C300AC8F7F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA94294521AD27C300AC8F7F /* Main.storyboard */; };
 		FA94294921AD27C400AC8F7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA94294821AD27C400AC8F7F /* Assets.xcassets */; };
 		FA94294C21AD27C400AC8F7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA94294A21AD27C400AC8F7F /* LaunchScreen.storyboard */; };
 		FA94295421AD27D300AC8F7F /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA94295321AD27D300AC8F7F /* ChatMessageCell.swift */; };
@@ -26,7 +25,6 @@
 		FA4D279721B00F1C000288D4 /* BottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView.swift; sourceTree = "<group>"; };
 		FA94293E21AD27C300AC8F7F /* TestMessage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestMessage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA94294121AD27C300AC8F7F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		FA94294621AD27C300AC8F7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FA94294821AD27C400AC8F7F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA94294B21AD27C400AC8F7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FA94294D21AD27C400AC8F7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -70,7 +68,6 @@
 				FA94295321AD27D300AC8F7F /* ChatMessageCell.swift */,
 				FA2A0FA321B28DFF0023C78B /* YandexClient.swift */,
 				FA2A0FA521B52C6A0023C78B /* VoiceRecognizer.swift */,
-				FA94294521AD27C300AC8F7F /* Main.storyboard */,
 				FA94294821AD27C400AC8F7F /* Assets.xcassets */,
 				FA94294A21AD27C400AC8F7F /* LaunchScreen.storyboard */,
 				FA2A0FA721B536320023C78B /* Keys.plist */,
@@ -140,7 +137,6 @@
 				FA2A0FA821B536320023C78B /* Keys.plist in Resources */,
 				FA94294C21AD27C400AC8F7F /* LaunchScreen.storyboard in Resources */,
 				FA94294921AD27C400AC8F7F /* Assets.xcassets in Resources */,
-				FA94294721AD27C300AC8F7F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,14 +159,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		FA94294521AD27C300AC8F7F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FA94294621AD27C300AC8F7F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		FA94294A21AD27C400AC8F7F /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

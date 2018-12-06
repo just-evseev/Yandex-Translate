@@ -13,6 +13,10 @@ struct ChatMessage {
     let isIncoming: Bool
 }
 
+protocol ProtocolToBottomView {
+    func displayToches()
+}
+
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SendElementDelegate, TextSender, AlertProtocol {
     
     private let cellId = "id"
@@ -22,10 +26,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     private var bottomView: ButtomView!
 
     var chatMessages = [ChatMessage]()
+    var protocolToBottomView: ProtocolToBottomView?
     
     private var barHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
     private var displayWidth = CGFloat()
     private var displayHeight = CGFloat()
+    private var isPortrait = true
     
     let YC = YandexClient()
     
@@ -51,7 +57,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.register(ChatMessageCell.self, forCellReuseIdentifier: cellId)
         tableView.separatorStyle = .none
         tableView.transform = CGAffineTransform(rotationAngle: -(CGFloat.pi));
-        tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: tableView.bounds.size.width - 8.0)
+        tableView.showsVerticalScrollIndicator = false
         
         bottomView = ButtomView(frame: CGRect(x: 4, y: displayHeight - 60, width: displayWidth - 8, height: 44))
         bottomView.element = self
@@ -62,6 +68,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(tap)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -111,45 +121,45 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            customView.frame.origin.y += keyboardSize.height
-            tableView.frame.origin.y += keyboardSize.height
-            tableView.frame.size.height -= keyboardSize.height - 22
-            if self.view.frame.origin.y == 0{
-                self.view.frame.origin.y -= keyboardSize.height
-            }
+        if let keyboardHeight = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.height {
+            print(keyboardHeight)
+            bottomView.frame.origin.y -= keyboardHeight
+            tableView.frame.size.height -= keyboardHeight - 22
         }
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            customView.frame.origin.y -= keyboardSize.height
-            tableView.frame.origin.y -= keyboardSize.height
-            tableView.frame.size.height += keyboardSize.height - 22
-            if self.view.frame.origin.y != 0{
-                self.view.frame.origin.y += keyboardSize.height
-            }
+        if isPortrait {
+            bottomView.frame = CGRect(x: 4, y: displayHeight - 60, width: displayWidth - 8, height: 44)
+            tableView.frame = CGRect(x: 0, y: 72, width: displayWidth, height: displayHeight - 159)
+        } else {
+            tableView.frame = CGRect(x: 0, y: 72, width: displayHeight, height: (displayWidth - 159))
+            bottomView.frame = CGRect(x: 4, y: displayWidth - 60, width: displayHeight - 8, height: 44)
         }
     }
 
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         switch UIDevice.current.orientation{
         case .portrait:
+            isPortrait = true
             customView.frame = CGRect(x: 0, y: barHeight, width: displayWidth, height: 72 - barHeight)
             yandexlogoImageView.frame = CGRect(x: displayWidth / 2 - 71.41, y: (72 - barHeight) / 2 - 10.45, width: 142.82, height: 20.9)
             tableView.frame = CGRect(x: 0, y: 72, width: displayWidth, height: (displayHeight - 159))
             bottomView.frame = CGRect(x: 4, y: displayHeight - 60, width: displayWidth - 8, height: 44)
         case .portraitUpsideDown:
+            isPortrait = true
             customView.frame = CGRect(x: 0, y: barHeight, width: displayWidth, height: 72 - barHeight)
             yandexlogoImageView.frame = CGRect(x: displayWidth / 2 - 71.41, y: (72 - barHeight) / 2 - 10.45, width: 142.82, height: 20.9)
             tableView.frame = CGRect(x: 0, y: 72, width: displayWidth, height: (displayHeight - 159))
             bottomView.frame = CGRect(x: 4, y: displayHeight - 60, width: displayWidth - 8, height: 44)
         case .landscapeLeft:
+            isPortrait = false
             customView.frame = CGRect(x: 0, y: barHeight, width: displayHeight, height: 72 - barHeight)
             yandexlogoImageView.frame = CGRect(x: displayHeight / 2 - 71.41, y: (72 - barHeight) / 2 - 10.45, width: 142.82, height: 20.9)
             tableView.frame = CGRect(x: 0, y: 72, width: displayHeight, height: (displayWidth - 159))
             bottomView.frame = CGRect(x: 4, y: displayWidth - 60, width: displayHeight - 8, height: 44)
         case .landscapeRight:
+            isPortrait = false
             customView.frame = CGRect(x: 0, y: barHeight, width: displayHeight, height: 72 - barHeight)
             yandexlogoImageView.frame = CGRect(x: displayHeight / 2 - 71.41, y: (72 - barHeight) / 2 - 10.45, width: 142.82, height: 20.9)
             tableView.frame = CGRect(x: 0, y: 72, width: displayHeight, height: (displayWidth - 159))
@@ -159,4 +169,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
 
+    @objc func handleTap() {
+        bottomView.displayToches()
+    }
 }
