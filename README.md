@@ -7,4 +7,6 @@ Application translator connected to Yandex API
 * RU / EN voice recognition
 * Landscape mode support
 
+![Screenshot](ScreenShot.png)
+
 The application is a test task for a job at a Yandex company. When working on it, I tried to implement the architectural pattern VIPER.
