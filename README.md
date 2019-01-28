@@ -1,8 +1,10 @@
 # Yandex-Translate
-translator application connected to Yandex API
+Application translator connected to Yandex API
 
-## What the application can do:
+## What an application can do:
 * Text translation
 * Auto-detect text language
-* RU/EN voice recognition
+* RU / EN voice recognition
 * Landscape mode support
+
+The application is a test task for a job at a Yandex company. When working on it, I tried to implement the architectural pattern VIPER.
