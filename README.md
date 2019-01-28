@@ -14,7 +14,7 @@
 ### English version
 _Application translator connected to Yandex API_
 
-#### What an application can do:
+#### What the application can do:
 * _Text translation_
 * _Auto-detect text language_
 * _RU / EN voice recognition_
