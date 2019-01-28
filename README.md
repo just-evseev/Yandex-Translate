@@ -5,6 +5,6 @@ Application translator connected to Yandex API
 * Text translation
 * Auto-detect text language
 * RU / EN voice recognition
-* Landscape mode support
-![Screenshot](ScreenShot.png)
+* Landscape mode support  
+![Screenshot](Screen_Shot.png)  
 The application is a test task for a job at a Yandex company. When working on it, I tried to implement the architectural pattern VIPER.
