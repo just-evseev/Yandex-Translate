@@ -4,7 +4,7 @@ protocol SendElementDelegate {
     func sendElement(_ str: String, _ lang: Bool)
 }
 
-class ButtomView: UIView, UITextFieldDelegate, VoiceRecognizeText {
+class BottomView: UIView, UITextFieldDelegate {
     
     private var changeLangButton = UIButton(type: .custom)
     private var textField = UITextField()
@@ -20,6 +20,7 @@ class ButtomView: UIView, UITextFieldDelegate, VoiceRecognizeText {
 
     private var isActiveButtonOnMicro = true
     private var isMicroActive = false
+    ///
     private var isENLang = true
     /*
      true = ENG
@@ -213,15 +214,17 @@ class ButtomView: UIView, UITextFieldDelegate, VoiceRecognizeText {
         }
     }
     
-    func getText(text: String) {
-        element?.sendElement(text, isENLang)
-    }
-    
     func displayToches() {
         endEditing(true)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension BottomView: VoiceRecognizeText {
+    func getText(text: String) {
+        element?.sendElement(text, isENLang)
     }
 }

@@ -15,6 +15,8 @@ class ChatMessageCell: UITableViewCell {
     private var bubblePersonLeadingConstraint: NSLayoutConstraint!
     private var bubblePersonTrailingConstraint: NSLayoutConstraint!
     
+    private let BUBBLE_VIEW_CORNER_RADIUS: CGFloat = 16
+    
     var chatMessage: ChatMessage! {
         didSet {
             bubbleBackgroudView.backgroundColor = chatMessage.isIncoming ? UIColor.blueYandex : UIColor.redYandex
@@ -65,47 +67,23 @@ class ChatMessageCell: UITableViewCell {
         
         backgroundColor = .clear
         
-        bubbleBackgroudView.layer.cornerRadius = 16.0
-        
-        personText.font = UIFont.systemFont(ofSize: 15.0, weight: UIFont.Weight.medium)
-        translateText.font = UIFont.systemFont(ofSize: 20.0, weight: UIFont.Weight.medium)
-        translateText.sizeToFit()
-        personText.sizeToFit()
-        
+        bubbleBackgroudView.layer.cornerRadius = BUBBLE_VIEW_CORNER_RADIUS
         bubbleBackgroudView.translatesAutoresizingMaskIntoConstraints = false
-        personText.translatesAutoresizingMaskIntoConstraints = false
-        translateText.translatesAutoresizingMaskIntoConstraints = false
-        
-        personText.numberOfLines = 0
-        translateText.numberOfLines = 0
-        
         addSubview(bubbleBackgroudView)
-        addSubview(personText)
-        addSubview(translateText)
+
+        personText.font = .personFont
+        personText.numberOfLines = 0
+        personText.sizeToFit()
+        personText.translatesAutoresizingMaskIntoConstraints = false
+        bubbleBackgroudView.addSubview(personText)
         
-        let constraints = [
-            personText.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            personText.widthAnchor.constraint(lessThanOrEqualToConstant: 199),
-            
-            translateText.topAnchor.constraint(equalTo: personText.bottomAnchor, constant: 2),
-            translateText.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24),
-            translateText.widthAnchor.constraint(lessThanOrEqualToConstant: 199),
-            
-            bubbleBackgroudView.topAnchor.constraint(equalTo: personText.topAnchor, constant: -11),
-            bubbleBackgroudView.bottomAnchor.constraint(equalTo: translateText.bottomAnchor, constant: 11)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        translateText.numberOfLines = 0
+        translateText.font = .translatedFont
+        translateText.sizeToFit()
+        translateText.translatesAutoresizingMaskIntoConstraints = false
+        bubbleBackgroudView.addSubview(translateText)
         
-        personLeadingConstraint = translateText.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24)
-        translateLeadingConstraint = personText.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24)
         
-        personTrailingConstraint = translateText.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24)
-        translateTrailingConstraint = personText.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24)
-        
-        bubbleTransLeadingConstraint = bubbleBackgroudView.leadingAnchor.constraint(equalTo: translateText.leadingAnchor, constant: -12)
-        bubbleTransTrailingConstraint = bubbleBackgroudView.trailingAnchor.constraint(equalTo: translateText.trailingAnchor, constant: 12)
-        bubblePersonLeadingConstraint = bubbleBackgroudView.leadingAnchor.constraint(equalTo: personText.leadingAnchor, constant: -12)
-        bubblePersonTrailingConstraint = bubbleBackgroudView.trailingAnchor.constraint(equalTo: personText.trailingAnchor, constant: 12)
     }
 
     required init?(coder aDecoder: NSCoder) {

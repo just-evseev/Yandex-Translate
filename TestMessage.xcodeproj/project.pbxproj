@@ -16,6 +16,7 @@
 		FA94294C21AD27C400AC8F7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA94294A21AD27C400AC8F7F /* LaunchScreen.storyboard */; };
 		FA94295421AD27D300AC8F7F /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA94295321AD27D300AC8F7F /* ChatMessageCell.swift */; };
 		FA94295621AD27DD00AC8F7F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA94295521AD27DD00AC8F7F /* ViewController.swift */; };
+		FAACA62923095C270082BFDE /* UIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAACA62823095C270082BFDE /* UIExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		FA94294D21AD27C400AC8F7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA94295321AD27D300AC8F7F /* ChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		FA94295521AD27DD00AC8F7F /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		FAACA62823095C270082BFDE /* UIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				FA94295521AD27DD00AC8F7F /* ViewController.swift */,
 				FA4D279721B00F1C000288D4 /* BottomView.swift */,
 				FA94295321AD27D300AC8F7F /* ChatMessageCell.swift */,
+				FAACA62823095C270082BFDE /* UIExtensions.swift */,
 				FA2A0FA321B28DFF0023C78B /* YandexClient.swift */,
 				FA2A0FA521B52C6A0023C78B /* VoiceRecognizer.swift */,
 				FA94294821AD27C400AC8F7F /* Assets.xcassets */,
@@ -153,6 +156,7 @@
 				FA94294221AD27C300AC8F7F /* AppDelegate.swift in Sources */,
 				FA4D279821B00F1C000288D4 /* BottomView.swift in Sources */,
 				FA2A0FA421B28DFF0023C78B /* YandexClient.swift in Sources */,
+				FAACA62923095C270082BFDE /* UIExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
