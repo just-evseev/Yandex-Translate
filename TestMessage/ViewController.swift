@@ -1,19 +1,16 @@
 import UIKit
 
-struct ChatMessage {
-    let text: String
-    let transText: String
-    let isIncoming: Bool
+protocol ViewControllerProtocol: class {
+    
 }
 
-class ViewController: UIViewController, UITableViewDelegate, SendElementDelegate, TextSender, AlertProtocol {
+class ViewController: UIViewController {
     
     private let cellId = "i\\d"
     private let tableView = UITableView()
     private var bottomView = BottomView()
     private var bottomBottomViewConstraint: NSLayoutConstraint!
-    var chatMessages = [ChatMessage]()
-    let YC = YandexClient()
+    private var presenter: ViewPresenterProtocol!
     
     private let INDENT_DISTANCE: CGFloat = -16
     private let BOTTOM_VIEW_HEIGHT: CGFloat = 44
@@ -25,9 +22,10 @@ class ViewController: UIViewController, UITableViewDelegate, SendElementDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        YC.textProtocol = self
+        let presenter = ViewPresenter()
+        presenter.view = self
+        self.presenter = presenter
         
-        bottomView.element = self
         bottomView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bottomView)
         bottomView.heightAnchor.constraint(equalToConstant: BOTTOM_VIEW_HEIGHT).isActive = true
@@ -36,7 +34,6 @@ class ViewController: UIViewController, UITableViewDelegate, SendElementDelegate
         bottomBottomViewConstraint = bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: INDENT_DISTANCE)
         bottomBottomViewConstraint.isActive = true
         
-        tableView.delegate = self
         tableView.dataSource = self
         tableView.register(ChatMessageCell.self, forCellReuseIdentifier: cellId)
         tableView.separatorStyle = .none
@@ -67,29 +64,6 @@ class ViewController: UIViewController, UITableViewDelegate, SendElementDelegate
         view.addGestureRecognizer(tap)
     }
     
-    func sendElement(_ str: String, _ lang: Bool) {
-        YC.getLang(text: str, lang: lang)
-    }
-    
-    func sendTextLang(text: String, lang: String) {
-        YC.getMethod(textToTranslate: text, lang: lang)
-    }
-    
-    func sendTranslatedText(text: String, translatedText: String, lang: String) {
-        chatMessages.insert(ChatMessage(text: text, transText: translatedText, isIncoming: lang == "en"), at: 0)
-        DispatchQueue.main.async {
-            self.tableView.beginUpdates()
-            self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableView.RowAnimation.fade)
-            self.tableView.endUpdates()
-        }
-    }
-    
-    func sendAlert(message: String) {
-        let alert = UIAlertController(title: "Speech Recognizer Error", message: message, preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
-    
     @objc func keyboardWillShow(n: NSNotification) {
         if let keyboardHeight = (n.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height {
             bottomBottomViewConstraint.constant = -keyboardHeight + INDENT_DISTANCE
@@ -109,17 +83,16 @@ class ViewController: UIViewController, UITableViewDelegate, SendElementDelegate
 
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return chatMessages.count
+        return presenter.getRowCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ChatMessageCell
-        let chatMessage = chatMessages[indexPath.row]
-        
-        cell.chatMessage = chatMessage
-        cell.isUserInteractionEnabled = false
-        cell.transform = CGAffineTransform(rotationAngle: CGFloat.pi);
-        
+        cell.chatMessage = presenter.getMessage(for: indexPath.row)
         return cell
     }
+}
+
+extension ViewController: ViewControllerProtocol {
+    
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol TextSender {
+protocol YandexClientTextSender {
     func sendTranslatedText(text: String, translatedText: String, lang: String)
     func sendTextLang(text: String, lang: String)
 }
