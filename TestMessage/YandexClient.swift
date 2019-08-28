@@ -17,7 +17,7 @@ class YandexClient {
     private var APIKey = ""
     private let translateSite = "https://translate.yandex.net/api/v1.5/tr.json/translate"
     private let detectSite = "https://translate.yandex.net/api/v1.5/tr.json/detect"
-    var textProtocol: TextSender?
+    var textProtocol: YandexClientTextSender?
     
     init() {
         var nsDictionary: NSDictionary?

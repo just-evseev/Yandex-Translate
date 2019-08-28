@@ -4,6 +4,10 @@ protocol SendElementDelegate {
     func sendElement(_ str: String, _ lang: Bool)
 }
 
+protocol BottomViewProtocol: class {
+    
+}
+
 class BottomView: UIView, UITextFieldDelegate {
     
     private var changeLangButton = UIButton(type: .custom)
@@ -17,6 +21,10 @@ class BottomView: UIView, UITextFieldDelegate {
     
     let voiceRecogniser = VoiseRecognizer()
     var element: SendElementDelegate?
+    var presenter: BottomViewPresenterProtocol?
+    
+    private let CORNER_RADIUS: CGFloat = 22
+    private let FLAG_CORNER_RADIUS: CGFloat = 18
 
     private var isActiveButtonOnMicro = true
     private var isMicroActive = false
@@ -36,10 +44,10 @@ class BottomView: UIView, UITextFieldDelegate {
         voiceRecogniser.voiseRecognizeTextProtocol = self
                 
         backgroundColor = UIColor.blueYandex
-        layer.cornerRadius = 22.0
+        layer.cornerRadius = CORNER_RADIUS
         
         flagsView.backgroundColor = UIColor.whiteYandex
-        flagsView.layer.cornerRadius = 18
+        flagsView.layer.cornerRadius = FLAG_CORNER_RADIUS
         
         changeLangButton.layer.cornerRadius = 18
         changeLangButton.addTarget(self, action: #selector(self.changeLanguageButtonPressed), for: .touchUpInside)
@@ -227,4 +235,8 @@ extension BottomView: VoiceRecognizeText {
     func getText(text: String) {
         element?.sendElement(text, isENLang)
     }
+}
+
+extension BottomView: BottomViewProtocol {
+    
 }

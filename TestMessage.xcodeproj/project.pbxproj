@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		092524D22316B02000020958 /* BottomViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092524D12316B02000020958 /* BottomViewPresenter.swift */; };
 		FA2A0FA421B28DFF0023C78B /* YandexClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2A0FA321B28DFF0023C78B /* YandexClient.swift */; };
 		FA2A0FA621B52C6A0023C78B /* VoiceRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2A0FA521B52C6A0023C78B /* VoiceRecognizer.swift */; };
 		FA2A0FA821B536320023C78B /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA2A0FA721B536320023C78B /* Keys.plist */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		092524D12316B02000020958 /* BottomViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomViewPresenter.swift; sourceTree = "<group>"; };
 		FA2A0FA321B28DFF0023C78B /* YandexClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexClient.swift; sourceTree = "<group>"; };
 		FA2A0FA521B52C6A0023C78B /* VoiceRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecognizer.swift; sourceTree = "<group>"; };
 		FA2A0FA721B536320023C78B /* Keys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 				FA94295521AD27DD00AC8F7F /* ViewController.swift */,
 				FA86F359230B145F006951A3 /* ViewPresenter.swift */,
 				FA4D279721B00F1C000288D4 /* BottomView.swift */,
+				092524D12316B02000020958 /* BottomViewPresenter.swift */,
 				FA94295321AD27D300AC8F7F /* ChatMessageCell.swift */,
 				FAACA62823095C270082BFDE /* UIExtensions.swift */,
 				FA2A0FA321B28DFF0023C78B /* YandexClient.swift */,
@@ -114,6 +117,7 @@
 				TargetAttributes = {
 					FA94293D21AD27C300AC8F7F = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1030;
 					};
 				};
 			};
@@ -160,6 +164,7 @@
 				FA94294221AD27C300AC8F7F /* AppDelegate.swift in Sources */,
 				FA4D279821B00F1C000288D4 /* BottomView.swift in Sources */,
 				FA2A0FA421B28DFF0023C78B /* YandexClient.swift in Sources */,
+				092524D22316B02000020958 /* BottomViewPresenter.swift in Sources */,
 				FAACA62923095C270082BFDE /* UIExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -307,7 +312,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = olaoshka.TestMessage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -325,7 +330,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = olaoshka.TestMessage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

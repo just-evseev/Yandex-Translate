@@ -18,7 +18,6 @@ protocol VoiceRecognizeText {
 }
 
 class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
-    
     private var speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))! //ru_RU
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
@@ -26,6 +25,8 @@ class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
     
     var alertProtocol: AlertProtocol?
     var voiseRecognizeTextProtocol: VoiceRecognizeText?
+    
+    private let BUFFER_SIZE: AVAudioFrameCount = 1024
     
     override init() {
         super.init()
@@ -35,8 +36,9 @@ class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
     }
     
     func voiceRecognizeStart(lang: Bool) {
-        let lang = {lang ? "en-US" : "ru_RU"}
-        speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: lang()))!
+        var lang: String { return lang ? "en-US" : "ru_RU" }
+        guard let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: lang)) else { return }
+        self.speechRecognizer = speechRecognizer
         do {
             try startRecording()
         } catch {
@@ -66,7 +68,7 @@ class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
         recognitionRequest.shouldReportPartialResults = false
         
         let recordingFormat = inputNode.outputFormat(forBus: 0)
-        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
+        inputNode.installTap(onBus: 0, bufferSize: BUFFER_SIZE, format: recordingFormat) { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
             self.recognitionRequest?.append(buffer)
         }
         
@@ -100,19 +102,7 @@ class VoiseRecognizer: NSObject, SFSpeechRecognizerDelegate {
     private func requestSpeechAuthorization() {
         SFSpeechRecognizer.requestAuthorization { authStatus in
             OperationQueue.main.addOperation {
-                switch authStatus {
-                case .authorized:
-                    break
-                case .denied:
-                    print("User denied access to speech recognition")
-                    break
-                case .restricted:
-                    print("Speech recognition restricted on this device")
-                    break
-                case .notDetermined:
-                    print("Speech recognition not yet authorized")
-                    break
-                }
+                print("Speech recognition status = \(authStatus)")
             }
         }
     }
