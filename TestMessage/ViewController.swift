@@ -26,9 +26,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let bottomPresenter = BottomViewPresenter()
-        bottomView.presenter = bottomPresenter
-        bottomPresenter.view = bottomView
+        bottomView.presenter = presenter.getBottomViewPresenter(for: bottomView)
         bottomView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bottomView)
         bottomView.heightAnchor.constraint(equalToConstant: BOTTOM_VIEW_HEIGHT).isActive = true
@@ -78,7 +76,7 @@ class ViewController: UIViewController {
     }
 
     @objc func handleTap() {
-//        bottomView.displayToches()
+        presenter.tapOnView()
     }
 }
 

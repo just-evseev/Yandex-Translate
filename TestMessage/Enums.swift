@@ -8,6 +8,12 @@
 
 import UIKit
 
+struct ChatMessage {
+    let text: String
+    let transText: String
+    let isIncoming: Bool
+}
+
 ///Язык и его параметры
 enum Language {
     case rus, eng

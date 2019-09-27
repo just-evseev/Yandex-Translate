@@ -21,6 +21,10 @@ protocol BottomViewPresenterProtocol: class {
     func getLang() -> Language
 }
 
+protocol BottomViewParentPresenterProtocol: class {
+    func stopEditing()
+}
+
 class BottomViewPresenter {
     ///Вью нашего презентера
     weak var view: BottomViewProtocol? {
@@ -91,4 +95,12 @@ extension BottomViewPresenter: BottomViewPresenterProtocol {
     }
 }
 
-
+extension BottomViewPresenter: BottomViewParentPresenterProtocol {
+    func stopEditing() {
+        if actionPosition == .endRec {
+            // TODO: Если была запись и мы нажали на смену языка
+            actionPosition = .startRec
+        }
+        view?.stopEditing()
+    }
+}

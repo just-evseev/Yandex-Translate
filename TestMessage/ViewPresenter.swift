@@ -8,19 +8,16 @@
 
 import UIKit
 
-struct ChatMessage {
-    let text: String
-    let transText: String
-    let isIncoming: Bool
-}
-
 protocol ViewPresenterProtocol: class {
     func getRowCount() -> Int
     func getMessage(for index: Int) -> ChatMessage
+    func getBottomViewPresenter(for view: BottomViewProtocol) -> BottomViewPresenterProtocol
+    func tapOnView()
 }
 
 class ViewPresenter {
     weak var view: ViewControllerProtocol?
+    private weak var bottomViewPresenter: BottomViewParentPresenterProtocol?
     private var chatMessages = [ChatMessage]()
     private let YC = YandexClient()
     init() {        
@@ -35,6 +32,17 @@ extension ViewPresenter: ViewPresenterProtocol {
     
     func getMessage(for index: Int) -> ChatMessage {
         return chatMessages[index]
+    }
+    
+    func getBottomViewPresenter(for view: BottomViewProtocol) -> BottomViewPresenterProtocol {
+        let presenter = BottomViewPresenter()
+        presenter.view = view
+        bottomViewPresenter = presenter
+        return presenter
+    }
+    
+    func tapOnView() {
+        bottomViewPresenter?.stopEditing()
     }
 }
 
