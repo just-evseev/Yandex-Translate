@@ -1,7 +1,7 @@
 import UIKit
 
 class ChatMessageCell: UITableViewCell {
-
+    
     private let translateText = UILabel()
     private let personText = UILabel()
     private let bubbleBackgroudView = UIView()

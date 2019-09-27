@@ -19,6 +19,7 @@
 		FA94295421AD27D300AC8F7F /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA94295321AD27D300AC8F7F /* ChatMessageCell.swift */; };
 		FA94295621AD27DD00AC8F7F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA94295521AD27DD00AC8F7F /* ViewController.swift */; };
 		FAACA62923095C270082BFDE /* UIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAACA62823095C270082BFDE /* UIExtensions.swift */; };
+		FAF655B1233E9EF100616295 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF655B0233E9EF100616295 /* Enums.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		FA94295321AD27D300AC8F7F /* ChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		FA94295521AD27DD00AC8F7F /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FAACA62823095C270082BFDE /* UIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIExtensions.swift; sourceTree = "<group>"; };
+		FAF655B0233E9EF100616295 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 				092524D12316B02000020958 /* BottomViewPresenter.swift */,
 				FA94295321AD27D300AC8F7F /* ChatMessageCell.swift */,
 				FAACA62823095C270082BFDE /* UIExtensions.swift */,
+				FAF655B0233E9EF100616295 /* Enums.swift */,
 				FA2A0FA321B28DFF0023C78B /* YandexClient.swift */,
 				FA2A0FA521B52C6A0023C78B /* VoiceRecognizer.swift */,
 				FA94294821AD27C400AC8F7F /* Assets.xcassets */,
@@ -159,6 +162,7 @@
 			files = (
 				FA94295621AD27DD00AC8F7F /* ViewController.swift in Sources */,
 				FA86F35A230B145F006951A3 /* ViewPresenter.swift in Sources */,
+				FAF655B1233E9EF100616295 /* Enums.swift in Sources */,
 				FA94295421AD27D300AC8F7F /* ChatMessageCell.swift in Sources */,
 				FA2A0FA621B52C6A0023C78B /* VoiceRecognizer.swift in Sources */,
 				FA94294221AD27C300AC8F7F /* AppDelegate.swift in Sources */,
@@ -234,7 +238,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -289,7 +293,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

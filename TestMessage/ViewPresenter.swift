@@ -23,9 +23,7 @@ class ViewPresenter {
     weak var view: ViewControllerProtocol?
     private var chatMessages = [ChatMessage]()
     private let YC = YandexClient()
-    init() {
-//        let webClient = YandexClient()
-        
+    init() {        
         YC.textProtocol = self
     }
 }
@@ -53,10 +51,10 @@ extension ViewPresenter: AlertProtocol {
     }
 }
 
-extension ViewPresenter: SendElementDelegate {
-    func sendElement(_ str: String, _ lang: Bool) {
-    }
-}
+//extension ViewPresenter: SendElementDelegate {
+//    func sendElement(_ str: String, _ lang: Bool) {
+//    }
+//}
 
 //    func sendElement(_ str: String, _ lang: Bool) {
 //        YC.getLang(text: str, lang: lang)

@@ -5,14 +5,18 @@ protocol ViewControllerProtocol: class {
 }
 
 class ViewController: UIViewController {
-    
     private let cellId = "i\\d"
+    //Логотип Яндекса
+    private let yandexLogo = UIImageView()
+    //TableView с введенным и переведенным текстом
     private let tableView = UITableView()
+    //Нижнее View с вводом текста для перевода
     private var bottomView = BottomView()
+    //Используем для поднятия View с вводом при подъеме клавиатуры
     private var bottomBottomViewConstraint: NSLayoutConstraint!
-    private var presenter: ViewPresenterProtocol!
+    var presenter: ViewPresenterProtocol!
     
-    private let INDENT_DISTANCE: CGFloat = -16
+    private let INDENT_DISTANCE: CGFloat = 16
     private let BOTTOM_VIEW_HEIGHT: CGFloat = 44
     private let YANDEX_LOGO_HEIGHT: CGFloat = 20.9
     private let YABDEX_LOGO_TOP_CONSTANT: CGFloat = 18
@@ -22,16 +26,15 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let presenter = ViewPresenter()
-        presenter.view = self
-        self.presenter = presenter
-        
+        let bottomPresenter = BottomViewPresenter()
+        bottomView.presenter = bottomPresenter
+        bottomPresenter.view = bottomView
         bottomView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bottomView)
         bottomView.heightAnchor.constraint(equalToConstant: BOTTOM_VIEW_HEIGHT).isActive = true
         bottomView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: BOTTOM_VIEW_EDGE_INDENT).isActive = true
         bottomView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -BOTTOM_VIEW_EDGE_INDENT).isActive = true
-        bottomBottomViewConstraint = bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: INDENT_DISTANCE)
+        bottomBottomViewConstraint = bottomView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -INDENT_DISTANCE)
         bottomBottomViewConstraint.isActive = true
         
         tableView.dataSource = self
@@ -44,17 +47,15 @@ class ViewController: UIViewController {
         tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: bottomView.topAnchor, constant: INDENT_DISTANCE).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: bottomView.topAnchor, constant: -INDENT_DISTANCE).isActive = true
         
-        let imageView = UIImageView()
-        let yandexLogo = UIImage(named: "yandexLogo")
-        imageView.image = yandexLogo
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(imageView)
-        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: YABDEX_LOGO_TOP_CONSTANT).isActive = true
-        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: YANDEX_LOGO_HEIGHT).isActive = true
-        imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: YANDEX_LOGO_MULTIPLIER).isActive = true
+        yandexLogo.image = UIImage(named: "yandexLogo")
+        yandexLogo.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(yandexLogo)
+        yandexLogo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: YABDEX_LOGO_TOP_CONSTANT).isActive = true
+        yandexLogo.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        yandexLogo.heightAnchor.constraint(equalToConstant: YANDEX_LOGO_HEIGHT).isActive = true
+        yandexLogo.widthAnchor.constraint(equalTo: yandexLogo.heightAnchor, multiplier: YANDEX_LOGO_MULTIPLIER).isActive = true
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -66,18 +67,18 @@ class ViewController: UIViewController {
     
     @objc func keyboardWillShow(n: NSNotification) {
         if let keyboardHeight = (n.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height {
-            bottomBottomViewConstraint.constant = -keyboardHeight + INDENT_DISTANCE
+            bottomBottomViewConstraint.constant = -keyboardHeight - INDENT_DISTANCE
             view.layoutIfNeeded()
         }
     }
 
     @objc func keyboardWillHide(n: NSNotification) {
-        bottomBottomViewConstraint.constant = INDENT_DISTANCE
+        bottomBottomViewConstraint.constant = -INDENT_DISTANCE
         view.layoutIfNeeded()
     }
 
     @objc func handleTap() {
-        bottomView.displayToches()
+//        bottomView.displayToches()
     }
 }
 
