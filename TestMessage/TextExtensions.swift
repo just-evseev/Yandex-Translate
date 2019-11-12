@@ -1,3 +1,5 @@
+import Foundation
+
 extension String {
     static var forTranslateURL = "https://translate.yandex.net/api/v1.5/tr.json/translate"
     static var forDetectURL = "https://translate.yandex.net/api/v1.5/tr.json/detect"

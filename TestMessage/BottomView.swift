@@ -44,12 +44,19 @@ class BottomView: UIView {
     private let LANG_FLAG_BORDER_WIDTH: CGFloat = 2
     private let CLEAR_BUTTON_SIZE: CGFloat = 16
     private let CLEAR_AND_ACTION_DISTANCE: CGFloat = 10
+    private let CLEAR_TOP: CGFloat = 14
     private let EDGE_LANG_FLAG_CONSTANT: CGFloat = 2
     private let EDGE_FLAG_VIEW_CONSTANT: CGFloat = 4
     private let TOP_BOTTOM_TEXT_FIELD_CONSTANT: CGFloat = 12
     private let LEAD_TRAIL_TEXT_FIELD_CONSTANT: CGFloat = 6
     private let ACTION_BUTTON_WIDTH: CGFloat = 28
     private let DIFFERENCE_FLAG_CHANGED: CGFloat = 10
+    private let ACTION_BTN_TOP: CGFloat = 14
+    private let ACTION_BTN_TRAIL: CGFloat = -16
+    private let ACTION_BTN_WIDTH: CGFloat = 12
+    private let ACTION_BTN_HEIGHT: CGFloat = 16
+    
+    private let CHANGE_LANG_DURATION = 0.3
     
     init () {
         super.init(frame: .zero)
@@ -100,16 +107,16 @@ class BottomView: UIView {
         actionButton.imageView?.contentMode = .scaleToFill
         actionButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(actionButton)
-        actionButton.topAnchor.constraint(equalTo: topAnchor, constant: 14).isActive = true
-        actionButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
-        actionButton.widthAnchor.constraint(equalToConstant: 12).isActive = true
-        actionButton.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        actionButton.topAnchor.constraint(equalTo: topAnchor, constant: ACTION_BTN_TOP).isActive = true
+        actionButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: ACTION_BTN_TRAIL).isActive = true
+        actionButton.widthAnchor.constraint(equalToConstant: ACTION_BTN_WIDTH).isActive = true
+        actionButton.heightAnchor.constraint(equalToConstant: ACTION_BTN_HEIGHT).isActive = true
         
         clearTextFieldButton.setImage(.clearImage, for: .normal)
         clearTextFieldButton.addTarget(self, action: #selector(clearPressed), for: .touchUpInside)
         clearTextFieldButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(clearTextFieldButton)
-        clearTextFieldButton.topAnchor.constraint(equalTo: topAnchor, constant: 14).isActive = true
+        clearTextFieldButton.topAnchor.constraint(equalTo: topAnchor, constant: CLEAR_TOP).isActive = true
         clearTextFieldButton.trailingAnchor.constraint(equalTo: actionButton.leadingAnchor, constant: -CLEAR_AND_ACTION_DISTANCE).isActive = true
         clearTextFieldButton.widthAnchor.constraint(equalToConstant: CLEAR_BUTTON_SIZE).isActive = true
         clearTextFieldButton.heightAnchor.constraint(equalTo: clearTextFieldButton.widthAnchor).isActive = true
@@ -168,7 +175,7 @@ extension BottomView: BottomViewProtocol {
     func changeLang(with position: FlagsPosition) {
         rusFlagLeadingConstraint.constant = position.constraintConstant
         britFlagTrailingConstraint.constant = -position.constraintConstant
-        UIViewPropertyAnimator(duration: 0.3, curve: .easeIn) {
+        UIViewPropertyAnimator(duration: CHANGE_LANG_DURATION, curve: .easeIn) {
             self.textField.attributedPlaceholder = position.placeholderText
             self.backgroundColor = position.backgroundColor
             if position == .engFirst {

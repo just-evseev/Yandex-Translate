@@ -59,6 +59,7 @@ class ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        tap.delegate = self
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(tap)
     }
@@ -94,4 +95,12 @@ extension ViewController: UITableViewDataSource {
 
 extension ViewController: ViewControllerProtocol {
     
+}
+
+extension ViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let view = gestureRecognizer.view else { return false }
+        let tappedView = view.hitTest(gestureRecognizer.location(in: view), with: nil)
+        return tappedView != nil && tappedView != bottomView
+    }
 }

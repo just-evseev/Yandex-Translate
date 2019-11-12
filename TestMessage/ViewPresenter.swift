@@ -14,6 +14,7 @@ class ViewPresenter {
     private lazy var YC: YandexClient = {
         return YandexClient(textProtocol: self)
     }()
+    
     init(view: ViewControllerProtocol) {
         self.view = view
     }
