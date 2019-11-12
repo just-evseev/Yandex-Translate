@@ -9,8 +9,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         let rootViewController = ViewController()
-        let presenter = ViewPresenter()
-        presenter.view = rootViewController
+        let presenter = ViewPresenter(view: rootViewController)
         rootViewController.presenter = presenter
         rootViewController.view.backgroundColor = UIColor.white
         window!.rootViewController = rootViewController

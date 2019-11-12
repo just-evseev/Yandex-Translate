@@ -1,11 +1,3 @@
-//
-//  Enums.swift
-//  TestMessage
-//
-//  Created by Ilya on 27/09/2019.
-//  Copyright © 2019 Ilya. All rights reserved.
-//
-
 import UIKit
 
 struct ChatMessage {
@@ -15,8 +7,8 @@ struct ChatMessage {
 }
 
 ///Язык и его параметры
-enum Language {
-    case rus, eng
+enum Language: String {
+    case rus = "ru", eng = "en"
     
     ///Имя языка
     var name: String {
@@ -31,6 +23,13 @@ enum Language {
         switch self {
         case .rus: return UIImage(named: "rusFlag") ?? UIImage()
         case .eng: return UIImage(named: "engFlag") ?? UIImage()
+        }
+    }
+    
+    var langParameter: String {
+        switch self {
+        case .rus: return "ru-en"
+        case .eng: return "en-ru"
         }
     }
 }

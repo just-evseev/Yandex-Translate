@@ -1,11 +1,3 @@
-//
-//  VoiceRecognizer.swift
-//  TestMessage
-//
-//  Created by Ilya on 03/12/2018.
-//  Copyright © 2018 Ilya. All rights reserved.
-//
-
 import UIKit
 import Speech
 
